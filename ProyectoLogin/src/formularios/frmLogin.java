@@ -1,7 +1,9 @@
 package formularios;
 
 import javax.swing.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import clases.Datos;
 /**
  * Created by walter on 24/08/15.
  */
@@ -33,9 +35,9 @@ public class frmLogin extends JFrame {
 
         //CREAMOS OBJETOS DEL FORMULARIO
         lblUsuario = new JLabel("Usuario");
-        txtUsuario = new JTextField(8);
+        txtUsuario = new JTextField(15);
         lblClave = new JLabel("Clave");
-        txtClave = new JPasswordField(8);
+        txtClave = new JPasswordField(15);
         btnAceptar = new JButton("Aceptar",icoAceptar);
         btnCancelar = new JButton("Cancelar",icoCancelar);
         lblImagen = new JLabel(icoImagen);
@@ -66,7 +68,45 @@ public class frmLogin extends JFrame {
         lblClave.reshape       (20,45,100,20);
         txtClave.reshape       (120,45,100,20);
 
-        btnAceptar.reshape     (20,75,90,60);
-        btnCancelar.reshape    (120,75,90,60);
+        btnAceptar.reshape     (20,80,100,70);
+        btnCancelar.reshape    (120,80,100,70);
+
+        //ADICIONASMOS FUNCIONES A LOS BOTONES
+
+        btnAceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                  btnAceptarActionPerformed(e);
+            }
+        });
+
+        btnCancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnCancelarActionPerformed(e);
+            }
+        });
+    }
+
+    private void  btnAceptarActionPerformed(ActionEvent e){
+        Datos misDatos = new Datos();
+        if (!misDatos.validarUsuario(txtUsuario.getText(),new String (txtClave.getPassword()))) {
+            JOptionPane.showMessageDialog(null, "Usuario o Contraseña no validos :( :( ");
+            txtUsuario.setText("");
+            txtClave.setText("");
+            txtUsuario.requestFocusInWindow();
+            return;
+        }
+
+        frmPrincipal miPrincipal = new frmPrincipal();
+        setVisible(false);
+        miPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        miPrincipal.setVisible(true);
+    }
+
+    private void btnCancelarActionPerformed(ActionEvent e){
+        //TERMINAMOS LA APLICACION
+        System.exit(0);
+
     }
 }
